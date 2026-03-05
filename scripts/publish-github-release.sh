@@ -25,9 +25,17 @@ fi
 AUTH_HEADER="Authorization: Bearer ${GITHUB_TOKEN}"
 API_HEADER="Accept: application/vnd.github+json"
 
-# Create repo if it does not exist.
+# Create repo if it does not exist. Supports owner type User or Organization.
+OWNER_JSON="$(curl -sS "https://api.github.com/users/${ORG}" -H "$AUTH_HEADER" -H "$API_HEADER")"
+OWNER_TYPE="$(echo "$OWNER_JSON" | sed -n 's/.*"type"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n1)"
+if [[ "$OWNER_TYPE" == "Organization" ]]; then
+  CREATE_URL="https://api.github.com/orgs/${ORG}/repos"
+else
+  CREATE_URL="https://api.github.com/user/repos"
+fi
+
 CREATE_BODY="{\"name\":\"${REPO}\",\"private\":false,\"description\":\"Rundeck active jobs navbar indicator plugin\"}"
-CREATE_RESP="$(curl -sS -X POST "https://api.github.com/orgs/${ORG}/repos" \
+CREATE_RESP="$(curl -sS -X POST "$CREATE_URL" \
   -H "$AUTH_HEADER" -H "$API_HEADER" -d "$CREATE_BODY" || true)"
 if echo "$CREATE_RESP" | grep -q '"status": "401"'; then
   echo "error: unauthorized creating repo ${ORG}/${REPO}" >&2
