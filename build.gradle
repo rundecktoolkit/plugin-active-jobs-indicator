@@ -1,0 +1,40 @@
+plugins {
+  id 'java'
+}
+
+group = 'com.rundecktoolkit.plugin'
+version = '1.0.0'
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation 'org.rundeck:rundeck-core:5.19.0-20260202'
+}
+
+jar {
+  archiveBaseName.set('ui-active-jobs-navbar-indicator')
+  manifest {
+    attributes(
+      'Rundeck-Plugin-Classnames': 'com.rundecktoolkit.plugin.ui.UIActiveJobsNavbarIndicator',
+      'Rundeck-Plugin-File-Version': project.version,
+      'Rundeck-Plugin-Version': '1.2',
+      'Rundeck-Plugin-Archive': 'true',
+      'Rundeck-Plugin-Name': 'ui-active-jobs-navbar-indicator',
+      'Rundeck-Plugin-Description': 'Shows active running job count and spinner in the top navbar.',
+      'Rundeck-Plugin-Author': 'rundecktoolkit community',
+      'Rundeck-Plugin-Rundeck-Compatibility-Version': '5.x',
+      'Rundeck-Plugin-Tags': 'UI,navbar,execution,activity,indicator',
+      'Rundeck-Plugin-License': 'MIT',
+      'Rundeck-Plugin-Source-Link': 'https://github.com/rundecktoolkit/plugin-active-jobs-indicator',
+      'Rundeck-Plugin-Target-Host-Compatibility': 'all',
+      'Rundeck-Plugin-Resources': 'active-jobs/indicator.v11.js, active-jobs/indicator.css'
+    )
+  }
+}
