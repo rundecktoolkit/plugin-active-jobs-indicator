@@ -68,7 +68,7 @@ Download the latest JAR from [Releases](https://github.com/rundecktoolkit/plugin
 ./gradlew clean jar
 ```
 
-Output: `build/libs/ui-active-jobs-navbar-indicator-1.0.0.jar`
+Output: `build/libs/ui-active-jobs-navbar-indicator-1.0.1.jar`
 
 ## Support
 
