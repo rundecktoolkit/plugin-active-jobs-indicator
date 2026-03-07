@@ -10,6 +10,7 @@
   var FETCH_TIMEOUT_MS = 2500;
   var PENDING_TTL_MS = 3500;
   var RUNNING_MAX = 200;
+  var MAX_TOOLTIP_JOBS = 4;
   var API_VERSION = String((window._rundeck && window._rundeck.apiVersion) || '57');
 
   function byId(id) {
@@ -167,7 +168,7 @@
   }
 
   function extractRunningData(data) {
-    var result = { count: 0 };
+    var result = { count: 0, jobs: [] };
     if (!data) {
       return result;
     }
@@ -180,7 +181,29 @@
       count = executions.length;
     }
 
+    var jobs = [];
+    for (var i = 0; i < executions.length; i++) {
+      var exec = executions[i] || {};
+      var job = exec.job || {};
+      var parts = [];
+      if (job.group || exec.groupPath) {
+        parts.push(job.group || exec.groupPath);
+      }
+      if (job.name || exec.jobName || exec.name) {
+        parts.push(job.name || exec.jobName || exec.name);
+      } else if (exec.id) {
+        parts.push('Execution #' + exec.id);
+      }
+      if (parts.length > 0) {
+        jobs.push(parts.join('/'));
+      }
+      if (jobs.length >= MAX_TOOLTIP_JOBS) {
+        break;
+      }
+    }
+
     result.count = Math.max(0, Number(count) || 0);
+    result.jobs = jobs;
     return result;
   }
 
@@ -302,6 +325,7 @@
     var state = {
       loading: false,
       runningCount: 0,
+      runningJobs: [],
       lastCheckedAt: null,
       lastError: null,
       pendingUntil: 0,
@@ -343,7 +367,16 @@
         badge.textContent = formatCount(effectiveCount);
 
         var base = effectiveCount === 1 ? '1 execution running.' : effectiveCount + ' executions running.';
-        setTooltip(link, base);
+        if (state.runningJobs.length > 0) {
+          var extra = effectiveCount - state.runningJobs.length;
+          var details = ' Running: ' + state.runningJobs.join(' | ');
+          if (extra > 0) {
+            details += ' | +' + extra + ' more';
+          }
+          setTooltip(link, base + details);
+        } else {
+          setTooltip(link, base);
+        }
         return;
       }
 
@@ -367,6 +400,7 @@
 
     function applyRunningResult(result) {
       state.runningCount = result.parsed.count;
+      state.runningJobs = result.parsed.jobs;
       state.lastApiCount = result.parsed.count;
       state.lastApiStatus = result.status;
       state.lastCheckedAt = new Date();
