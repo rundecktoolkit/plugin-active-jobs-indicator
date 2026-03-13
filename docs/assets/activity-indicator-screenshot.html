@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Active Jobs Indicator Screenshot</title>
+  <style>
+    :root {
+      --bg: #f1f1f1;
+      --panel: #f7f7f7;
+      --border: #c9c9c9;
+      --sidebar: #11141b;
+      --sidebar-text: #f3f3f3;
+      --muted: #b8b8c2;
+      --brand: #ef6c39;
+      --accent: #e33d2f;
+      --tooltip-border: #d6c5b8;
+      --tooltip-bg: #fffdfa;
+      --cyan: #1fb6dd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #d9d9d9;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    .frame {
+      width: 1600px;
+      height: 900px;
+      margin: 0 auto;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topbar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      height: 78px;
+      background: #f5f5f5;
+      border-bottom: 1px solid var(--border);
+      z-index: 5;
+    }
+
+    .brand {
+      position: absolute;
+      left: 24px;
+      top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .project-picker {
+      width: 470px;
+      height: 54px;
+      background: #fbfbfb;
+      border: 3px solid #5b5b66;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      color: #101014;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .project-picker .left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 78px;
+      bottom: 0;
+      z-index: 1;
+    }
+
+    .sidebar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 96px;
+      background: var(--sidebar);
+    }
+
+    .sidebar .slot {
+      color: var(--sidebar-text);
+      opacity: 0.9;
+      font-size: 17px;
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    .main {
+      position: absolute;
+      left: 96px;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 28px 36px;
+    }
+
+    .panel {
+      width: 100%;
+      height: 720px;
+      background: #ececec;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mock-text {
+      position: absolute;
+      left: 36px;
+      top: 34px;
+      color: #26262d;
+      font-size: 40px;
+      font-weight: 700;
+    }
+
+    .indicator-wrap {
+      position: absolute;
+      right: 122px;
+      top: 14px;
+      width: 230px;
+      height: 58px;
+      z-index: 8;
+    }
+
+    .indicator-box {
+      position: absolute;
+      right: 60px;
+      top: 0;
+      width: 66px;
+      height: 58px;
+      border: 6px solid var(--accent);
+      border-radius: 18px;
+    }
+
+    .icon-row {
+      position: absolute;
+      right: 8px;
+      top: 9px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #111216;
+    }
+
+    .badge {
+      position: absolute;
+      right: 50px;
+      top: -4px;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 3px #f5f5f5;
+    }
+
+    .tooltip {
+      position: absolute;
+      right: -6px;
+      top: 72px;
+      width: 308px;
+      padding: 22px 24px;
+      background: var(--tooltip-bg);
+      border: 3px solid var(--tooltip-border);
+      border-radius: 16px;
+      color: #585858;
+      font-size: 24px;
+      line-height: 1.38;
+      text-align: left;
+    }
+
+    .tooltip:before {
+      content: "";
+      position: absolute;
+      right: 110px;
+      top: -18px;
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-bottom: 18px solid var(--tooltip-border);
+    }
+
+    .tooltip:after {
+      content: "";
+      position: absolute;
+      right: 113px;
+      top: -14px;
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 15px solid var(--tooltip-bg);
+    }
+
+    .arrow-callout {
+      position: absolute;
+      right: 290px;
+      top: 186px;
+      width: 620px;
+      height: 280px;
+      z-index: 7;
+    }
+
+    .callout-box {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 470px;
+      background: var(--cyan);
+      color: #fff;
+      border-radius: 16px;
+      padding: 18px 20px;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .arrow-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .subtle {
+      color: #7d7d86;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="topbar">
+      <div class="brand">
+        <svg width="48" height="44" viewBox="0 0 48 44" aria-hidden="true">
+          <path d="M7 5h23l8 7H15z" fill="#ef6c39"></path>
+          <path d="M7 18h16l-8 7H7z" fill="#ef6c39"></path>
+          <path d="M7 31h25l-8 7H7z" fill="#ef6c39"></path>
+        </svg>
+        <div class="project-picker">
+          <div class="left">
+            <svg width="34" height="28" viewBox="0 0 34 28" aria-hidden="true">
+              <path d="M2 8h30v16H2z" fill="#111216"></path>
+              <path d="M12 2h10l2 6H10z" fill="#111216"></path>
+            </svg>
+            <span>NEW_PROJECT_NAME</span>
+          </div>
+          <span>⌄</span>
+        </div>
+      </div>
+      <div class="indicator-wrap">
+        <div class="indicator-box"></div>
+        <div class="badge">7</div>
+        <div class="icon-row">
+          <svg width="34" height="34" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M18 18h14v8H24v8h-8z" fill="#ef7b27"></path>
+            <path d="M14 34a18 18 0 0 0 29 11l5 6A26 26 0 0 1 6 34h8z" fill="#ef7b27"></path>
+            <path d="M46 46H32v-8h8v-8h8z" fill="#ef7b27"></path>
+            <path d="M50 30A18 18 0 0 0 21 19l-5-6A26 26 0 0 1 58 30h-8z" fill="#ef7b27"></path>
+          </svg>
+          <svg width="34" height="34" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M36 6l2 8a19 19 0 0 1 6 2l7-5 7 7-5 7a19 19 0 0 1 2 6l8 2v10l-8 2a19 19 0 0 1-2 6l5 7-7 7-7-5a19 19 0 0 1-6 2l-2 8H26l-2-8a19 19 0 0 1-6-2l-7 5-7-7 5-7a19 19 0 0 1-2-6l-8-2V33l8-2a19 19 0 0 1 2-6l-5-7 7-7 7 5a19 19 0 0 1 6-2l2-8zM31 24a8 8 0 1 0 0 16 8 8 0 0 0 0-16z" fill="#111216"></path>
+          </svg>
+          <svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="19" r="11" fill="#111216"></circle>
+            <path d="M12 56c3-11 12-17 20-17s17 6 20 17z" fill="#111216"></path>
+          </svg>
+        </div>
+        <div class="tooltip">
+          <div><strong>7 executions running.</strong></div>
+          <div>Running: Cost Anomaly Detector | Idle Resource Detector | Timer Job Step | Patch Validation | +3 more</div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="sidebar">
+        <div class="slot">DASHBOARD</div>
+        <div class="slot">JOBS</div>
+        <div class="slot">NODES</div>
+        <div class="slot">COMMANDS</div>
+        <div class="slot">ACTIVITY</div>
+      </div>
+      <div class="main">
+        <div class="panel">
+          <div class="mock-text">Platform activity visible before maintenance or restart</div>
+        </div>
+      </div>
+    </div>
+    <div class="arrow-callout">
+      <svg class="arrow-line" width="240" height="170" viewBox="0 0 240 170" aria-hidden="true">
+        <defs>
+          <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto">
+            <polygon points="0 0, 8 4, 0 8" fill="#1fb6dd"></polygon>
+          </marker>
+        </defs>
+        <path d="M235 150 C 155 126, 114 100, 72 18" stroke="#1fb6dd" stroke-width="10" fill="none" marker-end="url(#arrowhead)"></path>
+      </svg>
+      <div class="callout-box">
+        Hover over the indicator to see which jobs are running. The tooltip shows only a short list, then <span class="subtle">+N more</span>.
+      </div>
+    </div>
+  </div>
+</body>
+</html>
