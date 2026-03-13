@@ -181,7 +181,7 @@
 
     .tooltip {
       position: absolute;
-      right: -6px;
+      right: -34px;
       top: 72px;
       width: 308px;
       padding: 22px 24px;
@@ -197,7 +197,7 @@
     .tooltip:before {
       content: "";
       position: absolute;
-      right: 110px;
+      right: 138px;
       top: -18px;
       width: 0;
       height: 0;
@@ -209,7 +209,7 @@
     .tooltip:after {
       content: "";
       position: absolute;
-      right: 113px;
+      right: 141px;
       top: -14px;
       width: 0;
       height: 0;
@@ -220,17 +220,18 @@
 
     .arrow-callout {
       position: absolute;
-      right: 290px;
-      top: 186px;
-      width: 620px;
-      height: 280px;
+      left: 0;
+      top: 0;
+      width: 1600px;
+      height: 900px;
       z-index: 7;
+      pointer-events: none;
     }
 
     .callout-box {
       position: absolute;
-      right: 0;
-      bottom: 0;
+      left: 720px;
+      top: 425px;
       width: 470px;
       background: var(--cyan);
       color: #fff;
@@ -245,6 +246,7 @@
       position: absolute;
       left: 0;
       top: 0;
+      overflow: visible;
     }
 
     .subtle {
@@ -311,13 +313,13 @@
       </div>
     </div>
     <div class="arrow-callout">
-      <svg class="arrow-line" width="240" height="170" viewBox="0 0 240 170" aria-hidden="true">
+      <svg class="arrow-line" width="1600" height="900" viewBox="0 0 1600 900" aria-hidden="true">
         <defs>
           <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto">
             <polygon points="0 0, 8 4, 0 8" fill="#1fb6dd"></polygon>
           </marker>
         </defs>
-        <path d="M235 150 C 155 126, 114 100, 72 18" stroke="#1fb6dd" stroke-width="10" fill="none" marker-end="url(#arrowhead)"></path>
+        <path d="M1185 482 C 1260 390, 1324 205, 1366 44" stroke="#1fb6dd" stroke-width="10" fill="none" marker-end="url(#arrowhead)"></path>
       </svg>
       <div class="callout-box">
         Hover over the indicator to see which jobs are running. The tooltip shows only a short list, then <span class="subtle">+N more</span>.
